@@ -11,3 +11,4 @@ derby.log
 jettywrapper.log
 velocity.log*
 *.log
+resources/jetty-users.properties
