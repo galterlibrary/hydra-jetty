@@ -26,19 +26,6 @@ set :linked_dirs, [
   'logs', 'solr/data', "solr/#{fetch(:stage)}-core/data", 'fcrepo4-data'
 ]
 
-namespace :deploy do
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
-end
-
 namespace :config do
   desc 'Link the file with secrets'
   task :jetty_users do
@@ -52,4 +39,13 @@ namespace :config do
   end
 end
 
-before :deploy, 'config:jetty_users'
+namespace :jetty do
+  desc 'Start Jetty'
+  task :start do
+    on roles(:app) do
+      execute("cd #{release_path} && java -jar start.jar")
+    end
+  end
+end
+
+after 'deploy:publishing', 'config:jetty_users'
