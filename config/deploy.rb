@@ -25,27 +25,27 @@ set :deploy_to, "/var/www/apps/#{fetch(:application)}"
 set :linked_dirs, [
   'logs', 'solr/data', "solr/#{fetch(:stage)}-core/data", 'fcrepo4-data'
 ]
+set :linked_files, ['resources/jetty-users.properties']
 
 namespace :config do
-  desc 'Link the file with secrets'
-  task :jetty_users do
-    on roles(:app) do
-      execute(
-        :ln, '-sf',
-        "#{fetch(:deploy_to)}/secrets/jetty-users.properties",
-        "#{release_path}/resources/"
-      )
-    end
-  end
 end
 
 namespace :jetty do
   desc 'Start Jetty'
   task :start do
     on roles(:app) do
-      execute("cd #{release_path} && java -jar start.jar")
+      execute(
+        "(cd #{release_path} && nohup java -jar start.jar > std.out 2>&1 &) && sleep 1",
+        pty: true
+      )
+      puts 'Success here does not have to mean that the app has actually started...'
+    end
+  end
+
+  desc 'Stop Jetty'
+  task :stop do
+    on roles(:app) do
+      execute("cd #{release_path} && java -jar start.jar --stop")
     end
   end
 end
-
-after 'deploy:publishing', 'config:jetty_users'
