@@ -49,3 +49,6 @@ namespace :jetty do
     end
   end
 end
+
+before 'deploy:publishing', 'jetty:stop'
+before 'deploy:publishing', 'jetty:start'
