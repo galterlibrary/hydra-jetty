@@ -13,3 +13,4 @@ velocity.log*
 *.log
 resources/jetty-users.properties
 *.swp
+.bundle
