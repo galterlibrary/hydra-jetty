@@ -1,0 +1,41 @@
+namespace :systemctl do
+  namespace :jetty do
+    task :restart do
+      on roles(:all) do
+        execute :sudo, :systemctl, :restart, 'galter-jetty.service'
+      end
+    end
+
+    task :status do
+      on roles(:all) do
+        execute :sudo, :systemctl, :status, 'galter-jetty.service'
+      end
+    end
+  end
+
+  namespace :httpd do
+    task :restart do
+      on roles(:all) do
+        execute :sudo, :systemctl, :restart, 'httpd.service'
+      end
+    end
+
+    task :start do
+      on roles(:all) do
+        execute :sudo, :systemctl, :start, 'httpd.service'
+      end
+    end
+
+    task :stop do
+      on roles(:all) do
+        execute :sudo, :systemctl, :stop, 'httpd.service'
+      end
+    end
+
+    task :status do
+      on roles(:all) do
+        execute :sudo, :systemctl, :status, 'httpd.service'
+      end
+    end
+  end
+end
