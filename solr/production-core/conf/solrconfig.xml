@@ -152,6 +152,16 @@
     </lst>
   </searchComponent>
   
+  <searchComponent name="terms" class="solr.TermsComponent"/>
+  <requestHandler name="/terms" class="solr.SearchHandler" startup="lazy">
+    <lst name="defaults">
+      <bool name="terms">true</bool>
+      <bool name="distrib">false</bool>
+    </lst>
+    <arr name="components">
+      <str>terms</str>
+    </arr>
+  </requestHandler>
   <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" /> 
   
   <requestDispatcher handleSelect="true" >
